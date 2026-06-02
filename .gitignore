@@ -1,0 +1,83 @@
+# ========================
+# Node modules
+# ========================
+node_modules/
+**/node_modules/
+
+# ========================
+# Logs
+# ========================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ========================
+# Environment variables
+# ========================
+.env
+**/.env
+
+# ========================
+# Coverage reports
+# ========================
+coverage/
+**/coverage/
+
+# ========================
+# k6 performance results
+# ========================
+performance/
+backend/tests/k6/results/
+
+# ========================
+# Firebase Hosting build/output
+# ========================
+frontend/build/
+frontend/.firebase/
+firebase-debug.log
+
+# ========================
+# Temporary files
+# ========================
+tmp/
+temp/
+*.tmp
+
+# ========================
+# MacOS system files
+# ========================
+.DS_Store
+
+# ========================
+# IDEs / Editors
+# ========================
+.vscode/
+.vscode/*
+.idea/
+
+# ========================
+# npm / package managers
+# ========================
+package-lock.json
+yarn.lock
+.pnpm-lock.yaml
+
+# ========================
+# Markdown docs (keep only root README.md)
+# ========================
+*.md
+!README.md
+
+# ========================
+# Test/demo project folders
+# ========================
+ProyectoP2Preubas/
+
+# ========================
+# Miscellaneous
+# ========================
+*.swp
+*.swo
