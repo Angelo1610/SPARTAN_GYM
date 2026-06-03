@@ -21,17 +21,50 @@ pool.on('error', (err) => {
   process.exitCode = 1;
 });
 
-// Probar conexión al iniciar (usar promesas)
+async function inicializarTablas() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS usuarios (
+      id SERIAL PRIMARY KEY,
+      nombre VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      rol VARCHAR(50) DEFAULT 'user',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS servicios (
+      id SERIAL PRIMARY KEY,
+      nombre VARCHAR(255) NOT NULL,
+      descripcion TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS reservas (
+      id SERIAL PRIMARY KEY,
+      usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+      servicio_id INTEGER NOT NULL REFERENCES servicios(id) ON DELETE CASCADE,
+      fecha VARCHAR(50) NOT NULL,
+      hora VARCHAR(50) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
+    CREATE INDEX IF NOT EXISTS idx_reservas_usuario_id ON reservas(usuario_id);
+    CREATE INDEX IF NOT EXISTS idx_reservas_servicio_id ON reservas(servicio_id);
+  `);
+  console.log('✓ Tablas verificadas/creadas correctamente');
+}
+
 (async () => {
   try {
-    const res = await pool.query('SELECT NOW()');
+    await pool.query('SELECT NOW()');
     console.log('✓ Conectado a PostgreSQL correctamente');
+    await inicializarTablas();
   } catch (err) {
     console.error('❌ Error conectando a PostgreSQL:', err.message);
-    console.error('Verifica que:');
-    console.error('  - PostgreSQL está ejecutándose');
-    console.error('  - Base de datos "reservas_gym" existe');
-    console.error('  - Las credenciales en .env son correctas');
   }
 })();
 
