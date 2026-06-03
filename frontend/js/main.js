@@ -1,6 +1,6 @@
 // ==================== CONFIGURACIÓN GLOBAL ====================
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 const token = localStorage.getItem('token');
 
 // Verificar autenticación

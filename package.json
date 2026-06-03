@@ -1,7 +1,10 @@
 {
-  "name": "proyectop2preubas",
+  "name": "spartan-gym",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "backend/server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "node backend/server.js",
     "test": "jest --coverage --ci",
