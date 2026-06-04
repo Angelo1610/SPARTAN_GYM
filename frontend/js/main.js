@@ -43,12 +43,12 @@ function inicializarDashboard() {
   if (adminSection && usuarioRol === 'admin') {
     adminSection.style.display = 'block';
   }
-  
+
   // Mostrar/ocultar secciones de reservas según rol
   const seccionMisReservas = document.getElementById('seccionMisReservas');
   const seccionTodasReservas = document.getElementById('seccionTodasReservas');
   const btnNuevaReserva = document.getElementById('btnNuevaReserva');
-  
+
   if (usuarioRol === 'admin') {
     if (seccionMisReservas) seccionMisReservas.style.display = 'none';
     if (seccionTodasReservas) seccionTodasReservas.style.display = 'block';
@@ -58,7 +58,7 @@ function inicializarDashboard() {
     if (seccionTodasReservas) seccionTodasReservas.style.display = 'none';
     if (btnNuevaReserva) btnNuevaReserva.style.display = 'block';
   }
-  
+
   // Mostrar rol del usuario
   const rolElement = document.getElementById('usuarioRol');
   if (rolElement) {
@@ -77,8 +77,8 @@ async function cargarServicios() {
   try {
     const response = await fetch(`${API}/servicios`, {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!response.ok) throw new Error('Error al cargar servicios');
@@ -98,7 +98,9 @@ function mostrarServicios(servicios) {
     if (servicios.length === 0) {
       containerView.innerHTML = '<p class="sin-datos">No hay servicios disponibles</p>';
     } else {
-      containerView.innerHTML = servicios.map(servicio => `
+      containerView.innerHTML = servicios
+        .map(
+          (servicio) => `
         <div class="servicio-card">
           <h3>${servicio.nombre}</h3>
           <p>${servicio.descripcion || 'Sin descripción'}</p>
@@ -106,10 +108,12 @@ function mostrarServicios(servicios) {
             Reservar
           </button>
         </div>
-      `).join('');
+      `
+        )
+        .join('');
     }
   }
-  
+
   // Mostrar servicios en la sección admin (con CRUD completo por tarjeta)
   if (usuarioRol === 'admin') {
     const containerAdmin = document.getElementById('serviciosList');
@@ -117,10 +121,11 @@ function mostrarServicios(servicios) {
       if (servicios.length === 0) {
         containerAdmin.innerHTML = '<p class="sin-datos">No hay servicios registrados</p>';
       } else {
-        containerAdmin.innerHTML = servicios.map(servicio => {
-          const nombreEsc = String(servicio.nombre || '').replace(/"/g, '&quot;');
-          const descEsc = String(servicio.descripcion || '').replace(/"/g, '&quot;');
-          return `
+        containerAdmin.innerHTML = servicios
+          .map((servicio) => {
+            const nombreEsc = String(servicio.nombre || '').replace(/"/g, '&quot;');
+            const descEsc = String(servicio.descripcion || '').replace(/"/g, '&quot;');
+            return `
             <div class="servicio-card" id="card-${servicio.id}" data-nombre="${nombreEsc}" data-desc="${descEsc}">
               <div id="view-${servicio.id}">
                 <h3>${servicio.nombre}</h3>
@@ -146,7 +151,8 @@ function mostrarServicios(servicios) {
               </div>
             </div>
           `;
-        }).join('');
+          })
+          .join('');
       }
     }
   }
@@ -159,9 +165,9 @@ async function eliminarServicio(servicioId) {
     const response = await fetch(`${API}/servicios/${servicioId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.ok) {
@@ -202,10 +208,10 @@ async function guardarServicio(id) {
     const response = await fetch(`${API}/servicios/${id}`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ nombre, descripcion })
+      body: JSON.stringify({ nombre, descripcion }),
     });
 
     const resultado = await response.json();
@@ -229,12 +235,12 @@ async function cargarMisReservas() {
     cargarTodasReservas();
     return;
   }
-  
+
   try {
     const response = await fetch(`${API}/reservas`, {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!response.ok) throw new Error('Error al cargar reservas');
@@ -251,8 +257,8 @@ async function cargarTodasReservas() {
   try {
     const response = await fetch(`${API}/reservas`, {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!response.ok) throw new Error('Error al cargar reservas');
@@ -274,7 +280,9 @@ function mostrarReservas(reservas) {
     return;
   }
 
-  container.innerHTML = reservas.map(reserva => `
+  container.innerHTML = reservas
+    .map(
+      (reserva) => `
     <div class="reserva-card">
       <h4>${reserva.servicio_nombre || 'Servicio'}</h4>
       <p><strong>${reserva.fecha}</strong> a las <strong>${reserva.hora}</strong></p>
@@ -282,7 +290,9 @@ function mostrarReservas(reservas) {
         Cancelar
       </button>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 }
 
 function mostrarTodasReservas(reservas) {
@@ -296,7 +306,7 @@ function mostrarTodasReservas(reservas) {
 
   // Agrupar reservas por usuario
   const reservasPorUsuario = {};
-  reservas.forEach(reserva => {
+  reservas.forEach((reserva) => {
     if (!reservasPorUsuario[reserva.usuario_nombre]) {
       reservasPorUsuario[reserva.usuario_nombre] = [];
     }
@@ -313,8 +323,8 @@ function mostrarTodasReservas(reservas) {
         </h4>
         <div style="display: grid; gap: 10px;">
     `;
-    
-    reservasUsuario.forEach(reserva => {
+
+    reservasUsuario.forEach((reserva) => {
       html += `
         <div class="reserva-card-admin" style="background: #f9f9f9; padding: 12px; border-left: 4px solid #2ecc71; border-radius: 4px; color: #333;">
           <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;">
@@ -337,7 +347,7 @@ function mostrarTodasReservas(reservas) {
         </div>
       `;
     });
-    
+
     html += `
         </div>
       </div>
@@ -379,14 +389,14 @@ async function crearReserva() {
     const response = await fetch(`${API}/reservas`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         servicioId: parseInt(servicioId),
         fecha,
-        hora
-      })
+        hora,
+      }),
     });
 
     const resultado = await response.json();
@@ -411,9 +421,9 @@ async function eliminarReserva(reservaId) {
     const response = await fetch(`${API}/reservas/${reservaId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.ok) {
@@ -435,9 +445,9 @@ async function eliminarReservaAdmin(reservaId) {
     const response = await fetch(`${API}/reservas/${reservaId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.ok) {
@@ -467,10 +477,10 @@ async function crearServicio() {
     const response = await fetch(`${API}/servicios`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ nombre, descripcion })
+      body: JSON.stringify({ nombre, descripcion }),
     });
 
     const resultado = await response.json();
@@ -535,7 +545,7 @@ function configurarEventos() {
   // Cerrar modales al hacer clic fuera
   window.addEventListener('click', (e) => {
     const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
+    modals.forEach((modal) => {
       if (e.target === modal) {
         modal.style.display = 'none';
       }

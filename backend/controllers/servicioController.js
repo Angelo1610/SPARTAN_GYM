@@ -66,7 +66,9 @@ exports.eliminarServicio = async (req, res) => {
   try {
     // Verificar si el usuario es admin
     if (req.usuario.rol !== 'admin') {
-      return res.status(403).json({ mensaje: 'Solo los administradores pueden eliminar servicios' });
+      return res
+        .status(403)
+        .json({ mensaje: 'Solo los administradores pueden eliminar servicios' });
     }
 
     const { id } = req.params;

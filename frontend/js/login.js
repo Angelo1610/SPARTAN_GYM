@@ -9,7 +9,7 @@ const btnSubmit = document.getElementById('btnSubmit');
 
 emailInput.addEventListener('blur', () => {
   const errors = validarEmail(emailInput.value);
-  
+
   if (errors.length > 0) {
     emailInput.classList.add('error');
     emailInput.classList.remove('success');
@@ -24,7 +24,7 @@ emailInput.addEventListener('blur', () => {
 
 passwordInput.addEventListener('blur', () => {
   const errors = validarPassword(passwordInput.value);
-  
+
   if (errors.length > 0) {
     passwordInput.classList.add('error');
     passwordInput.classList.remove('success');
@@ -80,7 +80,7 @@ function validarFormulario() {
 function actualizarEstadoBoton() {
   const emailValido = emailInput.value && !validarEmail(emailInput.value).length;
   const passwordValido = passwordInput.value && !validarPassword(passwordInput.value).length;
-  
+
   btnSubmit.disabled = !(emailValido && passwordValido);
 }
 
@@ -101,16 +101,16 @@ form.addEventListener('submit', async (e) => {
 
   const datos = {
     email: emailInput.value.trim(),
-    password: passwordInput.value
+    password: passwordInput.value,
   };
 
   try {
     const response = await fetch('/api/usuarios/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(datos)
+      body: JSON.stringify(datos),
     });
 
     const resultado = await response.json();
@@ -119,15 +119,18 @@ form.addEventListener('submit', async (e) => {
       // Guardar token
       localStorage.setItem('token', resultado.token);
       localStorage.setItem('usuario', JSON.stringify(resultado.usuario || { email: datos.email }));
-      
+
       mostrarAlerta('success', 'Bienvenido! Redirigiendo...');
-      
+
       // Redirigir después de 1.5 segundos
       setTimeout(() => {
         window.location.href = 'dashboard.html';
       }, 1500);
     } else {
-      mostrarAlerta('danger', resultado.mensaje || 'Error al iniciar sesión. Verifica tus credenciales.');
+      mostrarAlerta(
+        'danger',
+        resultado.mensaje || 'Error al iniciar sesión. Verifica tus credenciales.'
+      );
       mostrarLoader('btnSubmit', false);
     }
   } catch (error) {

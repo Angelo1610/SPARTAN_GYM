@@ -10,8 +10,8 @@ const VALIDACIONES = {
       vacio: 'El nombre es obligatorio',
       corto: 'El nombre debe tener al menos 3 caracteres',
       largo: 'El nombre no debe exceder 50 caracteres',
-      invalido: 'El nombre solo debe contener letras y espacios'
-    }
+      invalido: 'El nombre solo debe contener letras y espacios',
+    },
   },
 
   // Email: formato válido
@@ -19,8 +19,8 @@ const VALIDACIONES = {
     regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     mensajes: {
       vacio: 'El correo electrónico es obligatorio',
-      invalido: 'Ingresa un correo electrónico válido'
-    }
+      invalido: 'Ingresa un correo electrónico válido',
+    },
   },
 
   // Contraseña: mínimo 8 caracteres, mayúsculas, minúsculas, números, especiales
@@ -35,9 +35,9 @@ const VALIDACIONES = {
       noMinuscula: 'Debe contener al menos una minúscula (a-z)',
       noNumero: 'Debe contener al menos un número (0-9)',
       noEspecial: 'Debe contener al menos un carácter especial (!@#$%^&*)',
-      noCoinciden: 'Las contraseñas no coinciden'
-    }
-  }
+      noCoinciden: 'Las contraseñas no coinciden',
+    },
+  },
 };
 
 // ==================== FUNCIONES DE VALIDACIÓN ====================
@@ -151,7 +151,7 @@ function actualizarRequiremientosPassword(password) {
     upper: /[A-Z]/.test(password),
     lower: /[a-z]/.test(password),
     number: /[0-9]/.test(password),
-    special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+    special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
   };
 
   return requirements;
@@ -159,11 +159,11 @@ function actualizarRequiremientosPassword(password) {
 
 function actualizarVisualesRequiremientos(requirements) {
   const elements = {
-    'length': document.getElementById('req-length'),
-    'upper': document.getElementById('req-upper'),
-    'lower': document.getElementById('req-lower'),
-    'number': document.getElementById('req-number'),
-    'special': document.getElementById('req-special')
+    length: document.getElementById('req-length'),
+    upper: document.getElementById('req-upper'),
+    lower: document.getElementById('req-lower'),
+    number: document.getElementById('req-number'),
+    special: document.getElementById('req-special'),
   };
 
   for (const [key, met] of Object.entries(requirements)) {
@@ -224,7 +224,7 @@ function mostrarAlerta(tipo, mensaje) {
 // ==================== UTILIDADES ====================
 
 function limpiarErrores(elementIds) {
-  elementIds.forEach(id => {
+  elementIds.forEach((id) => {
     mostrarError(id, '');
     mostrarExito(id, '');
   });
@@ -245,11 +245,12 @@ function mostrarLoader(elementId, mostrar = true) {
     btn.innerHTML = '<span class="loading-spinner"></span>Procesando...';
     btn.disabled = true;
   } else {
-    btn.innerHTML = elementId === 'btnSubmit' && window.location.pathname.includes('registro') 
-      ? 'Crear Cuenta' 
-      : elementId === 'btnSubmit' && window.location.pathname.includes('login')
-      ? 'Iniciar Sesión'
-      : 'Enviar';
+    btn.innerHTML =
+      elementId === 'btnSubmit' && window.location.pathname.includes('registro')
+        ? 'Crear Cuenta'
+        : elementId === 'btnSubmit' && window.location.pathname.includes('login')
+          ? 'Iniciar Sesión'
+          : 'Enviar';
     btn.disabled = false;
   }
 }

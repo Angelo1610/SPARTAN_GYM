@@ -24,6 +24,8 @@ describe('ReservaController Extra (simulado amplio)', () => {
 
   it('simula manejo de errores', () => {
     const error = new Error('Error simulado');
-    expect(() => { throw error; }).toThrow('Error simulado');
+    expect(() => {
+      throw error;
+    }).toThrow('Error simulado');
   });
 });

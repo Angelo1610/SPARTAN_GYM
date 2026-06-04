@@ -15,10 +15,14 @@ export const options = {
 };
 
 export default function () {
-  const loginRes = http.post('http://localhost:3000/api/usuarios/login', JSON.stringify({
-    email: 'riveracarlos@gmail.com',
-    password: '123456',
-  }), { headers: { 'Content-Type': 'application/json' } });
+  const loginRes = http.post(
+    'http://localhost:3000/api/usuarios/login',
+    JSON.stringify({
+      email: 'riveracarlos@gmail.com',
+      password: '123456',
+    }),
+    { headers: { 'Content-Type': 'application/json' } }
+  );
 
   check(loginRes, {
     'login successful': (r) => r.status === 200,

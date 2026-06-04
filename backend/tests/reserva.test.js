@@ -5,8 +5,8 @@ jest.mock('../utilities/queries');
 jest.mock('../database');
 
 describe('Reserva Controller', () => {
-  let req; let
-    res;
+  let req;
+  let res;
 
   beforeEach(() => {
     req = { body: {}, usuario: { id: 'u1', rol: 'user' }, params: {} };
@@ -22,7 +22,11 @@ describe('Reserva Controller', () => {
   it('crearReserva responde 201 correctamente', async () => {
     req.body = { servicioId: 1, fecha: '2025-08-19', hora: '10:00' };
     queries.createReserva.mockResolvedValue({
-      id: 1, usuario_id: 'u1', servicio_id: 1, fecha: '2025-08-19', hora: '10:00',
+      id: 1,
+      usuario_id: 'u1',
+      servicio_id: 1,
+      fecha: '2025-08-19',
+      hora: '10:00',
     });
     await controller.crearReserva(req, res);
     expect(res.status).toHaveBeenCalledWith(201);

@@ -1,118 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPARTAN GYM - Dashboard</title>
-  <link rel="stylesheet" href="css/estilos.css">
-</head>
-<body class="dashboard">
-  <div class="dashboard-container">
-    <!-- Header -->
-    <div class="dashboard-header">
-      <div>
-        <h1 class="dashboard-title">SPARTAN GYM</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SPARTAN GYM - Dashboard</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+  </head>
+  <body class="dashboard">
+    <div class="dashboard-container">
+      <!-- Header -->
+      <div class="dashboard-header">
+        <div>
+          <h1 class="dashboard-title">SPARTAN GYM</h1>
+        </div>
+        <div class="dashboard-user-info">
+          <span class="user-badge" id="usuarioRol">👤 Usuario</span>
+          <button class="btn-logout" id="btnLogout">Cerrar Sesión</button>
+        </div>
       </div>
-      <div class="dashboard-user-info">
-        <span class="user-badge" id="usuarioRol">👤 Usuario</span>
-        <button class="btn-logout" id="btnLogout">Cerrar Sesión</button>
+
+      <!-- Alerta container -->
+      <div id="alertContainer"></div>
+
+      <!-- Contenido del Dashboard -->
+      <div class="dashboard-content">
+        <!-- SECCIÓN ADMIN: GESTIONAR SERVICIOS -->
+        <div id="adminServiciosSection" class="dashboard-section" style="display: none">
+          <h3 class="section-title">Gestionar Servicios</h3>
+
+          <div class="form-group">
+            <label for="nuevoServicioNombre">Nombre del Servicio</label>
+            <input
+              type="text"
+              id="nuevoServicioNombre"
+              placeholder="Ej: Yoga, Pilates, Spinning..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="nuevoServicioDesc">Descripción</label>
+            <input type="text" id="nuevoServicioDesc" placeholder="Describe el servicio..." />
+          </div>
+
+          <button class="btn-submit" onclick="crearServicio()" style="margin-top: 15px">
+            ➕ Agregar Servicio
+          </button>
+
+          <hr style="border: 1px solid #27ae60; margin: 20px 0" />
+
+          <h4 style="color: #2ecc71; margin-bottom: 15px">Servicios:</h4>
+          <div id="serviciosList"></div>
+        </div>
+
+        <!-- SECCIÓN: VER SERVICIOS -->
+        <div class="dashboard-section">
+          <h3 class="section-title">Servicios Disponibles</h3>
+          <div id="serviciosListViewOnly"></div>
+        </div>
+
+        <!-- SECCIÓN: MIS RESERVAS (USUARIOS) -->
+        <div class="dashboard-section" id="seccionMisReservas">
+          <h3 class="section-title" id="reservasTitle">Mis Reservas</h3>
+          <button
+            class="btn-submit"
+            onclick="abrirModal('modalReserva')"
+            id="btnNuevaReserva"
+            style="width: 100%; margin-bottom: 15px"
+          >
+            Nueva Reserva
+          </button>
+          <div id="reservasList"></div>
+        </div>
+
+        <!-- SECCIÓN: TODAS LAS RESERVAS (ADMIN) -->
+        <div class="dashboard-section" id="seccionTodasReservas" style="display: none">
+          <h3 class="section-title">Todas las Reservas</h3>
+          <div id="todasReservasList"></div>
+        </div>
       </div>
     </div>
 
-    <!-- Alerta container -->
-    <div id="alertContainer"></div>
+    <!-- MODAL: CREAR RESERVA -->
+    <div id="modalReserva" class="modal">
+      <div class="modal-content">
+        <h2>Crear Reserva</h2>
 
-    <!-- Contenido del Dashboard -->
-    <div class="dashboard-content">
-      <!-- SECCIÓN ADMIN: GESTIONAR SERVICIOS -->
-      <div id="adminServiciosSection" class="dashboard-section" style="display: none;">
-        <h3 class="section-title">Gestionar Servicios</h3>
-        
         <div class="form-group">
-          <label for="nuevoServicioNombre">Nombre del Servicio</label>
-          <input 
-            type="text" 
-            id="nuevoServicioNombre" 
-            placeholder="Ej: Yoga, Pilates, Spinning..."
-          />
+          <label for="reservaFecha">Fecha</label>
+          <input type="date" id="reservaFecha" />
         </div>
 
         <div class="form-group">
-          <label for="nuevoServicioDesc">Descripción</label>
-          <input 
-            type="text" 
-            id="nuevoServicioDesc" 
-            placeholder="Describe el servicio..."
-          />
+          <label for="reservaHora">Hora</label>
+          <input type="time" id="reservaHora" />
         </div>
 
-        <button class="btn-submit" onclick="crearServicio()" style="margin-top: 15px;">
-          ➕ Agregar Servicio
-        </button>
+        <input type="hidden" id="servicioIdInput" />
 
-        <hr style="border: 1px solid #27ae60; margin: 20px 0;">
-
-        <h4 style="color: #2ecc71; margin-bottom: 15px;">Servicios:</h4>
-        <div id="serviciosList"></div>
-      </div>
-
-      <!-- SECCIÓN: VER SERVICIOS -->
-      <div class="dashboard-section">
-        <h3 class="section-title">Servicios Disponibles</h3>
-        <div id="serviciosListViewOnly"></div>
-      </div>
-
-      <!-- SECCIÓN: MIS RESERVAS (USUARIOS) -->
-      <div class="dashboard-section" id="seccionMisReservas">
-        <h3 class="section-title" id="reservasTitle">Mis Reservas</h3>
-        <button 
-          class="btn-submit" 
-          onclick="abrirModal('modalReserva')" 
-          id="btnNuevaReserva"
-          style="width: 100%; margin-bottom: 15px;"
+        <button class="btn-submit" onclick="crearReserva()">Confirmar Reserva</button>
+        <button
+          class="btn-submit"
+          style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); margin-top: 10px"
+          onclick="cerrarModal('modalReserva')"
         >
-          Nueva Reserva
+          Cancelar
         </button>
-        <div id="reservasList"></div>
-      </div>
-
-      <!-- SECCIÓN: TODAS LAS RESERVAS (ADMIN) -->
-      <div class="dashboard-section" id="seccionTodasReservas" style="display: none;">
-        <h3 class="section-title">Todas las Reservas</h3>
-        <div id="todasReservasList"></div>
       </div>
     </div>
-  </div>
 
-  <!-- MODAL: CREAR RESERVA -->
-  <div id="modalReserva" class="modal">
-    <div class="modal-content">
-      <h2>Crear Reserva</h2>
-      
-      <div class="form-group">
-        <label for="reservaFecha">Fecha</label>
-        <input type="date" id="reservaFecha" />
-      </div>
-
-      <div class="form-group">
-        <label for="reservaHora">Hora</label>
-        <input type="time" id="reservaHora" />
-      </div>
-
-      <input type="hidden" id="servicioIdInput" />
-
-      <button class="btn-submit" onclick="crearReserva()">Confirmar Reserva</button>
-      <button 
-        class="btn-submit" 
-        style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); margin-top: 10px;"
-        onclick="cerrarModal('modalReserva')"
-      >
-        Cancelar
-      </button>
-    </div>
-  </div>
-
-  <script src="js/validaciones.js"></script>
-  <script src="js/main.js"></script>
-</body>
+    <script src="js/validaciones.js"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>

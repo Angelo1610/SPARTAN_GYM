@@ -8,7 +8,9 @@ const getAllUsuarios = async () => {
 };
 
 const getUsuarioById = async (id) => {
-  const result = await pool.query('SELECT id, nombre, email, rol FROM usuarios WHERE id = $1', [id]);
+  const result = await pool.query('SELECT id, nombre, email, rol FROM usuarios WHERE id = $1', [
+    id,
+  ]);
   return result.rows[0];
 };
 
@@ -20,7 +22,7 @@ const getUsuarioByEmail = async (email) => {
 const createUsuario = async (nombre, email, password, rol = 'user') => {
   const result = await pool.query(
     'INSERT INTO usuarios (nombre, email, password, rol) VALUES ($1, $2, $3, $4) RETURNING id, nombre, email, rol',
-    [nombre, email, password, rol],
+    [nombre, email, password, rol]
   );
   return result.rows[0];
 };
@@ -28,7 +30,7 @@ const createUsuario = async (nombre, email, password, rol = 'user') => {
 const updateUsuario = async (id, nombre, email, rol) => {
   const result = await pool.query(
     'UPDATE usuarios SET nombre = $1, email = $2, rol = $3, updated_at = CURRENT_TIMESTAMP WHERE id = $4 RETURNING id, nombre, email, rol',
-    [nombre, email, rol, id],
+    [nombre, email, rol, id]
   );
   return result.rows[0];
 };
@@ -45,14 +47,16 @@ const getAllServicios = async () => {
 };
 
 const getServicioById = async (id) => {
-  const result = await pool.query('SELECT id, nombre, descripcion FROM servicios WHERE id = $1', [id]);
+  const result = await pool.query('SELECT id, nombre, descripcion FROM servicios WHERE id = $1', [
+    id,
+  ]);
   return result.rows[0];
 };
 
 const createServicio = async (nombre, descripcion) => {
   const result = await pool.query(
     'INSERT INTO servicios (nombre, descripcion) VALUES ($1, $2) RETURNING id, nombre, descripcion',
-    [nombre, descripcion],
+    [nombre, descripcion]
   );
   return result.rows[0];
 };
@@ -60,7 +64,7 @@ const createServicio = async (nombre, descripcion) => {
 const updateServicio = async (id, nombre, descripcion) => {
   const result = await pool.query(
     'UPDATE servicios SET nombre = $1, descripcion = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $3 RETURNING id, nombre, descripcion',
-    [nombre, descripcion, id],
+    [nombre, descripcion, id]
   );
   return result.rows[0];
 };
@@ -84,19 +88,23 @@ const getAllReservas = async () => {
 };
 
 const getReservaById = async (id) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT r.id, r.usuario_id, r.servicio_id, r.fecha, r.hora, 
            u.nombre as usuario_nombre, s.nombre as servicio_nombre
     FROM reservas r
     JOIN usuarios u ON r.usuario_id = u.id
     JOIN servicios s ON r.servicio_id = s.id
     WHERE r.id = $1
-  `, [id]);
+  `,
+    [id]
+  );
   return result.rows[0];
 };
 
 const getReservasByUsuario = async (usuarioId) => {
-  const result = await pool.query(`
+  const result = await pool.query(
+    `
     SELECT r.id, r.usuario_id, r.servicio_id, r.fecha, r.hora, 
            u.nombre as usuario_nombre, s.nombre as servicio_nombre
     FROM reservas r
@@ -104,14 +112,16 @@ const getReservasByUsuario = async (usuarioId) => {
     JOIN servicios s ON r.servicio_id = s.id
     WHERE r.usuario_id = $1
     ORDER BY r.fecha DESC, r.hora DESC
-  `, [usuarioId]);
+  `,
+    [usuarioId]
+  );
   return result.rows;
 };
 
 const createReserva = async (usuarioId, servicioId, fecha, hora) => {
   const result = await pool.query(
     'INSERT INTO reservas (usuario_id, servicio_id, fecha, hora) VALUES ($1, $2, $3, $4) RETURNING id, usuario_id, servicio_id, fecha, hora',
-    [usuarioId, servicioId, fecha, hora],
+    [usuarioId, servicioId, fecha, hora]
   );
   return result.rows[0];
 };
@@ -119,7 +129,7 @@ const createReserva = async (usuarioId, servicioId, fecha, hora) => {
 const updateReserva = async (id, usuarioId, servicioId, fecha, hora) => {
   const result = await pool.query(
     'UPDATE reservas SET usuario_id = $1, servicio_id = $2, fecha = $3, hora = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5 RETURNING id, usuario_id, servicio_id, fecha, hora',
-    [usuarioId, servicioId, fecha, hora, id],
+    [usuarioId, servicioId, fecha, hora, id]
   );
   return result.rows[0];
 };

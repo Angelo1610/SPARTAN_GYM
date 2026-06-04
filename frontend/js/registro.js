@@ -12,7 +12,7 @@ const btnSubmit = document.getElementById('btnSubmit');
 
 nombreInput.addEventListener('input', () => {
   const errors = validarNombre(nombreInput.value);
-  
+
   if (nombreInput.value.trim() === '') {
     nombreInput.classList.remove('error', 'success');
     mostrarError('nombreError', '');
@@ -28,7 +28,7 @@ nombreInput.addEventListener('input', () => {
     mostrarError('nombreError', '');
     mostrarExito('nombreSuccess', '✓ Nombre válido');
   }
-  
+
   actualizarEstadoBoton();
 });
 
@@ -36,7 +36,7 @@ nombreInput.addEventListener('input', () => {
 
 emailInput.addEventListener('input', () => {
   const errors = validarEmail(emailInput.value);
-  
+
   if (emailInput.value.trim() === '') {
     emailInput.classList.remove('error', 'success');
     mostrarError('emailError', '');
@@ -52,7 +52,7 @@ emailInput.addEventListener('input', () => {
     mostrarError('emailError', '');
     mostrarExito('emailSuccess', '✓ Email válido');
   }
-  
+
   actualizarEstadoBoton();
 });
 
@@ -60,7 +60,7 @@ emailInput.addEventListener('input', () => {
 
 passwordInput.addEventListener('input', () => {
   const password = passwordInput.value;
-  
+
   // Mostrar/ocultar requisitos
   if (password.length > 0) {
     document.getElementById('passwordRequirements').classList.add('show');
@@ -81,7 +81,7 @@ passwordInput.addEventListener('input', () => {
 
   // Validar errores
   const errors = validarPassword(password);
-  
+
   if (errors.length > 0) {
     passwordInput.classList.add('error');
     passwordInput.classList.remove('success');
@@ -96,7 +96,7 @@ passwordInput.addEventListener('input', () => {
   if (confirmPasswordInput.value) {
     validarConfirmacionPassword();
   }
-  
+
   actualizarEstadoBoton();
 });
 
@@ -111,7 +111,7 @@ function validarConfirmacionPassword() {
   }
 
   const errors = validarConfirmPassword(passwordInput.value, confirmPasswordInput.value);
-  
+
   if (errors.length > 0) {
     confirmPasswordInput.classList.add('error');
     confirmPasswordInput.classList.remove('success');
@@ -123,7 +123,7 @@ function validarConfirmacionPassword() {
     mostrarError('confirmPasswordError', '');
     mostrarExito('confirmPasswordSuccess', '✓ Las contraseñas coinciden');
   }
-  
+
   actualizarEstadoBoton();
 }
 
@@ -183,10 +183,18 @@ function actualizarEstadoBoton() {
   const nombreValido = nombreInput.value && !validarNombre(nombreInput.value).length;
   const emailValido = emailInput.value && !validarEmail(emailInput.value).length;
   const passwordValido = passwordInput.value && !validarPassword(passwordInput.value).length;
-  const confirmValido = confirmPasswordInput.value && !validarConfirmPassword(passwordInput.value, confirmPasswordInput.value).length;
+  const confirmValido =
+    confirmPasswordInput.value &&
+    !validarConfirmPassword(passwordInput.value, confirmPasswordInput.value).length;
   const rolValido = rolInput.value && rolInput.value.length > 0;
-  
-  btnSubmit.disabled = !(nombreValido && emailValido && passwordValido && confirmValido && rolValido);
+
+  btnSubmit.disabled = !(
+    nombreValido &&
+    emailValido &&
+    passwordValido &&
+    confirmValido &&
+    rolValido
+  );
 }
 
 // ==================== ENVÍO DEL FORMULARIO ====================
@@ -208,28 +216,28 @@ form.addEventListener('submit', async (e) => {
     nombre: nombreInput.value.trim(),
     email: emailInput.value.trim(),
     password: passwordInput.value,
-    rol: rolInput.value
+    rol: rolInput.value,
   };
 
   try {
     const response = await fetch('/api/usuarios/registrar', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(datos)
+      body: JSON.stringify(datos),
     });
 
     const resultado = await response.json();
 
     if (response.ok) {
       mostrarAlerta('success', 'Registro exitoso! Redirigiendo al login...');
-      
+
       // Limpiar formulario
       form.reset();
       document.getElementById('passwordRequirements').classList.remove('show');
       document.getElementById('passwordStrength').classList.remove('show');
-      
+
       // Redirigir después de 2 segundos
       setTimeout(() => {
         window.location.href = 'login.html';

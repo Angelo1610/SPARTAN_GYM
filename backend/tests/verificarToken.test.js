@@ -4,8 +4,9 @@ const verificarToken = require('../middlewares/verificarToken');
 jest.mock('jsonwebtoken');
 
 describe('Middleware verificarToken', () => {
-  let req; let res; let
-    next;
+  let req;
+  let res;
+  let next;
 
   beforeEach(() => {
     req = { headers: {} };
@@ -27,7 +28,9 @@ describe('Middleware verificarToken', () => {
 
   it('responde 400 si token inválido', () => {
     req.headers.authorization = 'Bearer 123';
-    jwt.verify.mockImplementation(() => { throw new Error(); });
+    jwt.verify.mockImplementation(() => {
+      throw new Error();
+    });
     verificarToken(req, res, next);
     expect(res.status).toHaveBeenCalledWith(400);
   });

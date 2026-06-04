@@ -8,9 +8,7 @@ const secret = process.env.JWT_SECRET;
 // Registrar usuario
 exports.registrar = async (req, res) => {
   try {
-    const {
-      nombre, email, password, rol,
-    } = req.body;
+    const { nombre, email, password, rol } = req.body;
 
     if (!nombre || !email || !password || !rol) {
       return res.status(400).json({ mensaje: 'Todos los campos son obligatorios' });
@@ -49,11 +47,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ mensaje: 'Contraseña incorrecta' });
     }
 
-    const token = jwt.sign(
-      { id: usuario.id, rol: usuario.rol },
-      secret,
-      { expiresIn: '3h' },
-    );
+    const token = jwt.sign({ id: usuario.id, rol: usuario.rol }, secret, { expiresIn: '3h' });
 
     res.status(200).json({ mensaje: 'Login exitoso', token });
   } catch (error) {

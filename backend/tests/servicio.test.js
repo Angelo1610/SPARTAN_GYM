@@ -5,8 +5,8 @@ jest.mock('../utilities/queries');
 jest.mock('../database');
 
 describe('Servicio Controller', () => {
-  let req; let
-    res;
+  let req;
+  let res;
 
   beforeEach(() => {
     req = { body: {}, params: {}, usuario: { id: 'u1', rol: 'admin' } };
@@ -35,7 +35,11 @@ describe('Servicio Controller', () => {
 
   it('crearServicio responde 200 correctamente', async () => {
     req.body = { nombre: 'Yoga', descripcion: 'Clases de yoga' };
-    queries.createServicio.mockResolvedValue({ id: 1, nombre: 'Yoga', descripcion: 'Clases de yoga' });
+    queries.createServicio.mockResolvedValue({
+      id: 1,
+      nombre: 'Yoga',
+      descripcion: 'Clases de yoga',
+    });
     await controller.crearServicio(req, res);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ mensaje: expect.any(String) }));
   });
