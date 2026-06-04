@@ -37,17 +37,19 @@ passwordInput.addEventListener('blur', () => {
   actualizarEstadoBoton();
 });
 
-// Limpiar errores mientras se escribe
+// Limpiar errores y actualizar botón mientras se escribe
 emailInput.addEventListener('input', () => {
   if (emailInput.classList.contains('error')) {
     mostrarError('emailError', '');
   }
+  actualizarEstadoBoton();
 });
 
 passwordInput.addEventListener('input', () => {
   if (passwordInput.classList.contains('error')) {
     mostrarError('passwordError', '');
   }
+  actualizarEstadoBoton();
 });
 
 // ==================== VALIDACIÓN DEL FORMULARIO ====================
