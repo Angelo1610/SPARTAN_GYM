@@ -132,7 +132,7 @@ function mostrarServicios(servicios) {
                 <p>${servicio.descripcion || 'Sin descripción'}</p>
                 <div style="display:flex; gap:8px; margin-top:10px;">
                   <button onclick="editarServicio(${servicio.id})" style="flex:1; background:#2980b9; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;">Editar</button>
-                  <button class="btn-danger" onclick="eliminarServicio(${servicio.id})" style="flex:1;">Eliminar</button>
+                  <button onclick="eliminarServicio(${servicio.id})" style="flex:1; background:#c0392b; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;">Eliminar</button>
                 </div>
               </div>
               <div id="edit-${servicio.id}" style="display:none;">
@@ -343,7 +343,7 @@ function mostrarTodasReservas(reservas) {
             </div>
           </div>
           <button class="btn-danger" onclick="eliminarReservaAdmin(${reserva.id})" style="width: 100%;">
-            🗑️ Eliminar Reserva
+            Eliminar Reserva
           </button>
         </div>
       `;
