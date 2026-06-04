@@ -16,7 +16,9 @@ exports.crearReserva = async (req, res) => {
     const [hour, minute] = hora.split(':').map(Number);
     const fechaHoraReserva = new Date(year, month - 1, day, hour, minute);
     if (fechaHoraReserva <= new Date()) {
-      return res.status(400).json({ mensaje: 'No puedes reservar en una fecha u hora anterior a la actual' });
+      return res
+        .status(400)
+        .json({ mensaje: 'No puedes reservar en una fecha u hora anterior a la actual' });
     }
 
     const reserva = await queries.createReserva(usuarioId, servicioId, fecha, hora);
