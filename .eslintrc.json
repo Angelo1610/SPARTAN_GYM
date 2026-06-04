@@ -13,6 +13,11 @@
     "no-console": "warn",
     "no-underscore-dangle": "off",
     "consistent-return": "warn",
-    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "indent": "off",
+    "object-curly-newline": "off",
+    "object-curly-spacing": "off",
+    "comma-dangle": "off",
+    "arrow-parens": "off"
   }
 }

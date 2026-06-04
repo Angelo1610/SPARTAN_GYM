@@ -77,6 +77,14 @@ yarn.lock
 ProyectoP2Preubas/
 
 # ========================
+# Word documents and Office temp files
+# ========================
+*.docx
+*.doc
+*.xlsx
+~$*
+
+# ========================
 # Miscellaneous
 # ========================
 *.swp
