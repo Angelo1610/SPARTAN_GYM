@@ -11,11 +11,11 @@ exports.crearReserva = async (req, res) => {
       return res.status(400).json({ mensaje: 'Todos los campos son obligatorios' });
     }
 
-    // Validar que la fecha/hora no sea pasada
+    // Validar que la fecha/hora no sea pasada (el usuario está en Ecuador UTC-5)
     const [year, month, day] = fecha.split('-').map(Number);
     const [hour, minute] = hora.split(':').map(Number);
-    const fechaHoraReserva = new Date(year, month - 1, day, hour, minute);
-    if (fechaHoraReserva <= new Date()) {
+    const fechaHoraUTC = new Date(Date.UTC(year, month - 1, day, hour + 5, minute));
+    if (fechaHoraUTC <= new Date()) {
       return res
         .status(400)
         .json({ mensaje: 'No puedes reservar en una fecha u hora anterior a la actual' });
