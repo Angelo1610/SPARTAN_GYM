@@ -1,5 +1,5 @@
 // backend/tests/database.test.js
-const mongoose = require('mongoose');
+jest.mock('../database');
 const db = require('../database');
 
 describe('Database connection', () => {
