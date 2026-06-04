@@ -17,8 +17,8 @@ const PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, () => {
   console.log(`\n✓ Backend iniciado en http://localhost:${PORT}`);
-  console.log('✓ Frontend disponible en http://localhost:${PORT}\n');
-  
+  console.log(`✓ Frontend disponible en http://localhost:${PORT}`);
+
   // Mantener el servidor ejecutándose
   console.log('✓ Servidor listo para recibir solicitudes...');
 });
@@ -36,4 +36,3 @@ process.on('uncaughtException', (err) => {
 
 // Mantener el proceso vivo
 process.stdin.resume();
-

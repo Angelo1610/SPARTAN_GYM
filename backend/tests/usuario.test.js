@@ -1,7 +1,7 @@
-const controller = require('../controllers/usuariocontroller');
-const queries = require('../utilities/queries');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const controller = require('../controllers/usuariocontroller');
+const queries = require('../utilities/queries');
 
 jest.mock('../utilities/queries');
 jest.mock('../database');
@@ -9,7 +9,8 @@ jest.mock('bcrypt');
 jest.mock('jsonwebtoken');
 
 describe('Usuario Controller', () => {
-  let req, res;
+  let req; let
+    res;
 
   beforeEach(() => {
     req = { body: {} };
@@ -24,20 +25,28 @@ describe('Usuario Controller', () => {
     });
 
     it('responde 400 si el email ya existe', async () => {
-      req.body = { nombre: 'x', email: 'x@mail.com', password: '123', rol: 'user' };
+      req.body = {
+        nombre: 'x', email: 'x@mail.com', password: '123', rol: 'user',
+      };
       queries.getUsuarioByEmail.mockResolvedValue({ id: 1 });
       await controller.registrar(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
     it('registra el usuario correctamente', async () => {
-      req.body = { nombre: 'x', email: 'x@mail.com', password: '123', rol: 'user' };
+      req.body = {
+        nombre: 'x', email: 'x@mail.com', password: '123', rol: 'user',
+      };
       queries.getUsuarioByEmail.mockResolvedValue(null);
       bcrypt.hash.mockResolvedValue('hashed');
-      queries.createUsuario.mockResolvedValue({ id: 1, nombre: 'x', email: 'x@mail.com', rol: 'user' });
+      queries.createUsuario.mockResolvedValue({
+        id: 1, nombre: 'x', email: 'x@mail.com', rol: 'user',
+      });
       await controller.registrar(req, res);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ mensaje: expect.any(String) }));
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({ mensaje: expect.any(String) }),
+      );
     });
   });
 
