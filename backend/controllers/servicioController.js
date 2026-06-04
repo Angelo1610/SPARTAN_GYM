@@ -14,7 +14,7 @@ exports.crearServicio = async (req, res) => {
     console.log('=== CREAR SERVICIO ===');
     console.log('req.usuario:', req.usuario);
     console.log('req.body:', req.body);
-    
+
     // Verificar si el usuario es admin
     if (!req.usuario || req.usuario.rol !== 'admin') {
       console.log('No es admin. Rol:', req.usuario?.rol);
@@ -43,7 +43,7 @@ exports.actualizarServicio = async (req, res) => {
       return res.status(403).json({ mensaje: 'Solo los administradores pueden editar servicios' });
     }
 
-    const id = req.params.id;
+    const { id } = req.params;
     const { nombre, descripcion } = req.body;
 
     if (!nombre) {
@@ -69,7 +69,7 @@ exports.eliminarServicio = async (req, res) => {
       return res.status(403).json({ mensaje: 'Solo los administradores pueden eliminar servicios' });
     }
 
-    const id = req.params.id;
+    const { id } = req.params;
     const servicio = await queries.getServicioById(id);
 
     if (!servicio) {

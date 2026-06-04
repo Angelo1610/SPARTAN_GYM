@@ -5,7 +5,8 @@ jest.mock('../utilities/queries');
 jest.mock('../database');
 
 describe('Servicio Controller', () => {
-  let req, res;
+  let req; let
+    res;
 
   beforeEach(() => {
     req = { body: {}, params: {}, usuario: { id: 'u1', rol: 'admin' } };

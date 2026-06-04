@@ -1,13 +1,14 @@
-const verificarToken = require('../middlewares/verificarToken');
 const jwt = require('jsonwebtoken');
+const verificarToken = require('../middlewares/verificarToken');
 
 jest.mock('jsonwebtoken');
 
 describe('Middleware verificarToken', () => {
-  let req, res, next;
+  let req; let res; let
+    next;
 
   beforeEach(() => {
-    req = { headers:{} };
+    req = { headers: {} };
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
     next = jest.fn();
     jest.clearAllMocks();
@@ -33,9 +34,9 @@ describe('Middleware verificarToken', () => {
 
   it('llama next si token válido', () => {
     req.headers.authorization = 'Bearer 123';
-    jwt.verify.mockReturnValue({ id:'u1' });
+    jwt.verify.mockReturnValue({ id: 'u1' });
     verificarToken(req, res, next);
     expect(next).toHaveBeenCalled();
-    expect(req.usuario).toEqual({ id:'u1' });
+    expect(req.usuario).toEqual({ id: 'u1' });
   });
 });

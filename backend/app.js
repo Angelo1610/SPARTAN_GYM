@@ -12,4 +12,3 @@ app.use('/api/servicios', require('./routes/servicios'));
 app.use('/api/reservas', require('./routes/reservas'));
 
 module.exports = app;
-    

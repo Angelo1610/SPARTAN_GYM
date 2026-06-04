@@ -24,9 +24,9 @@ exports.obtenerMisReservas = async (req, res) => {
   try {
     const usuarioId = req.usuario.id;
     const usuarioRol = req.usuario.rol;
-    
+
     let reservas;
-    
+
     // Si es admin, obtener todas las reservas con info del usuario
     if (usuarioRol === 'admin') {
       reservas = await queries.getAllReservas();
@@ -34,7 +34,7 @@ exports.obtenerMisReservas = async (req, res) => {
       // Si es usuario normal, obtener solo sus reservas
       reservas = await queries.getReservasByUsuario(usuarioId);
     }
-    
+
     res.json(reservas);
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al obtener reservas', error: error.message });
@@ -44,7 +44,7 @@ exports.obtenerMisReservas = async (req, res) => {
 // Eliminar reserva
 exports.eliminarReserva = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const usuarioRol = req.usuario.rol;
     const usuarioId = req.usuario.id;
     const reserva = await queries.getReservaById(id);
