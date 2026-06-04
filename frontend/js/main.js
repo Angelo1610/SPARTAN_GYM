@@ -131,8 +131,8 @@ function mostrarServicios(servicios) {
                 <h3>${servicio.nombre}</h3>
                 <p>${servicio.descripcion || 'Sin descripción'}</p>
                 <div style="display:flex; gap:8px; margin-top:10px;">
-                  <button onclick="editarServicio(${servicio.id})" style="flex:1;">✏️ Editar</button>
-                  <button class="btn-danger" onclick="eliminarServicio(${servicio.id})" style="flex:1;">🗑️ Eliminar</button>
+                  <button onclick="editarServicio(${servicio.id})" style="flex:1; background:#2980b9; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;">Editar</button>
+                  <button class="btn-danger" onclick="eliminarServicio(${servicio.id})" style="flex:1;">Eliminar</button>
                 </div>
               </div>
               <div id="edit-${servicio.id}" style="display:none;">
