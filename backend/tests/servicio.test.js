@@ -68,9 +68,21 @@ describe('Servicio Controller', () => {
     expect(res.status).toHaveBeenCalledWith(403);
   });
 
-  it('eliminarServicio responde 200 correctamente', async () => {
+  it('eliminarServicio responde 409 si el servicio tiene reservas activas', async () => {
     req.params.id = '1';
     queries.getServicioById.mockResolvedValue({ id: 1, nombre: 'Yoga' });
+    queries.countReservasByServicio.mockResolvedValue(3);
+    await controller.eliminarServicio(req, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({ mensaje: expect.stringContaining('3') })
+    );
+  });
+
+  it('eliminarServicio responde 200 correctamente si no tiene reservas', async () => {
+    req.params.id = '1';
+    queries.getServicioById.mockResolvedValue({ id: 1, nombre: 'Yoga' });
+    queries.countReservasByServicio.mockResolvedValue(0);
     queries.deleteServicio.mockResolvedValue({ id: 1 });
     await controller.eliminarServicio(req, res);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ mensaje: expect.any(String) }));

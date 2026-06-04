@@ -78,6 +78,13 @@ exports.eliminarServicio = async (req, res) => {
       return res.status(404).json({ mensaje: 'Servicio no encontrado' });
     }
 
+    const totalReservas = await queries.countReservasByServicio(id);
+    if (totalReservas > 0) {
+      return res.status(409).json({
+        mensaje: `No se puede eliminar el servicio porque tiene ${totalReservas} reserva(s) activa(s). Elimina primero las reservas asociadas.`,
+      });
+    }
+
     await queries.deleteServicio(id);
     res.json({ mensaje: 'Servicio eliminado' });
   } catch (error) {

@@ -74,6 +74,13 @@ const deleteServicio = async (id) => {
   return result.rows[0];
 };
 
+const countReservasByServicio = async (servicioId) => {
+  const result = await pool.query('SELECT COUNT(*) FROM reservas WHERE servicio_id = $1', [
+    servicioId,
+  ]);
+  return parseInt(result.rows[0].count, 10);
+};
+
 // ==================== RESERVAS ====================
 const getAllReservas = async () => {
   const result = await pool.query(`
@@ -153,6 +160,7 @@ module.exports = {
   createServicio,
   updateServicio,
   deleteServicio,
+  countReservasByServicio,
   // Reservas
   getAllReservas,
   getReservaById,

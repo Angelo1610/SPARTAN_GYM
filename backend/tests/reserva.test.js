@@ -20,16 +20,34 @@ describe('Reserva Controller', () => {
   });
 
   it('crearReserva responde 201 correctamente', async () => {
-    req.body = { servicioId: 1, fecha: '2025-08-19', hora: '10:00' };
+    req.body = { servicioId: 1, fecha: '2099-12-31', hora: '10:00' };
     queries.createReserva.mockResolvedValue({
       id: 1,
       usuario_id: 'u1',
       servicio_id: 1,
-      fecha: '2025-08-19',
+      fecha: '2099-12-31',
       hora: '10:00',
     });
     await controller.crearReserva(req, res);
     expect(res.status).toHaveBeenCalledWith(201);
+  });
+
+  it('crearReserva responde 400 si la fecha es pasada', async () => {
+    req.body = { servicioId: 1, fecha: '2000-01-01', hora: '10:00' };
+    await controller.crearReserva(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({ mensaje: expect.stringContaining('anterior') })
+    );
+  });
+
+  it('crearReserva responde 400 si la hora del dia actual ya paso', async () => {
+    const ayer = new Date();
+    ayer.setDate(ayer.getDate() - 1);
+    const fechaAyer = ayer.toISOString().slice(0, 10);
+    req.body = { servicioId: 1, fecha: fechaAyer, hora: '23:59' };
+    await controller.crearReserva(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
   });
 
   it('obtenerMisReservas responde con reservas del usuario', async () => {

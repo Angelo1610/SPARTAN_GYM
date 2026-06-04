@@ -170,11 +170,12 @@ async function eliminarServicio(servicioId) {
       },
     });
 
+    const resultado = await response.json();
     if (response.ok) {
       mostrarAlertaDashboard('success', 'Servicio eliminado correctamente');
       cargarServicios();
     } else {
-      mostrarAlertaDashboard('danger', 'Error al eliminar el servicio');
+      mostrarAlertaDashboard('danger', resultado.mensaje || 'Error al eliminar el servicio');
     }
   } catch (error) {
     console.error('Error:', error);
@@ -357,16 +358,48 @@ function mostrarTodasReservas(reservas) {
   container.innerHTML = html;
 }
 
+function fechaHoyLocal() {
+  const hoy = new Date();
+  const yyyy = hoy.getFullYear();
+  const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+  const dd = String(hoy.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function horaActualLocal() {
+  const ahora = new Date();
+  const hh = String(ahora.getHours()).padStart(2, '0');
+  const mi = String(ahora.getMinutes()).padStart(2, '0');
+  return `${hh}:${mi}`;
+}
+
+function actualizarMinHora(fechaInput, horaInput) {
+  if (!fechaInput || !horaInput) return;
+  if (fechaInput.value === fechaHoyLocal()) {
+    horaInput.min = horaActualLocal();
+    if (horaInput.value && horaInput.value < horaInput.min) horaInput.value = '';
+  } else {
+    horaInput.min = '';
+  }
+}
+
 function abrirReserva(servicioId, servicioNombre) {
   const modal = document.getElementById('modalReserva');
   if (!modal) return;
 
-  const fecha = document.getElementById('reservaFecha');
-  const hora = document.getElementById('reservaHora');
+  const fechaInput = document.getElementById('reservaFecha');
+  const horaInput = document.getElementById('reservaHora');
   const servicioInput = document.getElementById('servicioIdInput');
 
-  if (fecha) fecha.value = '';
-  if (hora) hora.value = '';
+  if (fechaInput) {
+    fechaInput.value = '';
+    fechaInput.min = fechaHoyLocal();
+    fechaInput.onchange = () => actualizarMinHora(fechaInput, horaInput);
+  }
+  if (horaInput) {
+    horaInput.value = '';
+    horaInput.min = '';
+  }
   if (servicioInput) servicioInput.value = servicioId;
 
   const titulo = document.querySelector('#modalReserva h2');

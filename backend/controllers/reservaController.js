@@ -11,6 +11,14 @@ exports.crearReserva = async (req, res) => {
       return res.status(400).json({ mensaje: 'Todos los campos son obligatorios' });
     }
 
+    // Validar que la fecha/hora no sea pasada
+    const [year, month, day] = fecha.split('-').map(Number);
+    const [hour, minute] = hora.split(':').map(Number);
+    const fechaHoraReserva = new Date(year, month - 1, day, hour, minute);
+    if (fechaHoraReserva <= new Date()) {
+      return res.status(400).json({ mensaje: 'No puedes reservar en una fecha u hora anterior a la actual' });
+    }
+
     const reserva = await queries.createReserva(usuarioId, servicioId, fecha, hora);
 
     res.status(201).json({ mensaje: 'Reserva hecha', reserva });

@@ -44,7 +44,7 @@ async function inicializarTablas() {
     CREATE TABLE IF NOT EXISTS reservas (
       id SERIAL PRIMARY KEY,
       usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-      servicio_id INTEGER NOT NULL REFERENCES servicios(id) ON DELETE CASCADE,
+      servicio_id INTEGER NOT NULL REFERENCES servicios(id) ON DELETE RESTRICT,
       fecha VARCHAR(50) NOT NULL,
       hora VARCHAR(50) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
