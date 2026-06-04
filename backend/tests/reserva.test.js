@@ -32,6 +32,16 @@ describe('Reserva Controller', () => {
     expect(res.status).toHaveBeenCalledWith(201);
   });
 
+  it('crearReserva responde 409 si ya existe reserva en esa fecha y hora', async () => {
+    req.body = { servicioId: 2, fecha: '2099-12-31', hora: '10:00' };
+    queries.getReservaByUsuarioFechaHora.mockResolvedValue({ id: 5 });
+    await controller.crearReserva(req, res);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({ mensaje: expect.stringContaining('Ya tienes') })
+    );
+  });
+
   it('crearReserva responde 400 si la fecha es pasada', async () => {
     req.body = { servicioId: 1, fecha: '2000-01-01', hora: '10:00' };
     await controller.crearReserva(req, res);

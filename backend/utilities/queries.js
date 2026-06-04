@@ -125,6 +125,14 @@ const getReservasByUsuario = async (usuarioId) => {
   return result.rows;
 };
 
+const getReservaByUsuarioFechaHora = async (usuarioId, fecha, hora) => {
+  const result = await pool.query(
+    'SELECT id FROM reservas WHERE usuario_id = $1 AND fecha = $2 AND hora = $3',
+    [usuarioId, fecha, hora]
+  );
+  return result.rows[0];
+};
+
 const createReserva = async (usuarioId, servicioId, fecha, hora) => {
   const result = await pool.query(
     'INSERT INTO reservas (usuario_id, servicio_id, fecha, hora) VALUES ($1, $2, $3, $4) RETURNING id, usuario_id, servicio_id, fecha, hora',
@@ -163,6 +171,7 @@ module.exports = {
   countReservasByServicio,
   // Reservas
   getAllReservas,
+  getReservaByUsuarioFechaHora,
   getReservaById,
   getReservasByUsuario,
   createReserva,
