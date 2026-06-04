@@ -44,16 +44,19 @@ function inicializarDashboard() {
     adminSection.style.display = 'block';
   }
 
-  // Mostrar/ocultar secciones de reservas según rol
+  // Mostrar/ocultar secciones según rol
   const seccionMisReservas = document.getElementById('seccionMisReservas');
   const seccionTodasReservas = document.getElementById('seccionTodasReservas');
+  const seccionServiciosDisponibles = document.getElementById('seccionServiciosDisponibles');
 
   if (usuarioRol === 'admin') {
     if (seccionMisReservas) seccionMisReservas.style.display = 'none';
     if (seccionTodasReservas) seccionTodasReservas.style.display = 'block';
+    if (seccionServiciosDisponibles) seccionServiciosDisponibles.style.display = 'none';
   } else {
     if (seccionMisReservas) seccionMisReservas.style.display = 'block';
     if (seccionTodasReservas) seccionTodasReservas.style.display = 'none';
+    if (seccionServiciosDisponibles) seccionServiciosDisponibles.style.display = 'block';
   }
 
   // Mostrar rol del usuario
